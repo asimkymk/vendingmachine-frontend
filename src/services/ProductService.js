@@ -5,4 +5,16 @@ export default class ProductService {
        return fetch(BaseService.BASE_URL+'/products').then(res=>res.json());
        
     }
+
+    async buyProduct(productId){
+        return fetch(BaseService.BASE_URL+'/products/buyProduct/'+productId,{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+              },
+              
+          }).then(res=>res.json());
+      
+            
+      }
 }

@@ -16,6 +16,7 @@ function Units() {
             (result) => {
                 setIsLoaded(true);
                 setUnit(result);
+                setError(false);
             },
             (error) => {
                 setIsLoaded(true);

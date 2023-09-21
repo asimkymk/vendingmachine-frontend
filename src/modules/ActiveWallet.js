@@ -9,12 +9,31 @@ function ActiveWallet() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [wallet, setWallet] = useState({});
 
+    function getRefund(){
+        const activeWalletService = new ActiveWalletService();
+        const reqData = {
+            "refundAmount":wallet.walletAmount
+          };
+        activeWalletService.refundWallet(reqData).then(
+            (result) => {
+                const reqWalletData = {
+                    "remove":result.wallet
+                  };
+                  activeWalletService.updateWallet(reqWalletData).then();
+            },
+            (error) => {
+                
+            }
+        )
+    }
+
     useEffect(() => {
         const activeWalletService = new ActiveWalletService();
         activeWalletService.getActiveWallet().then(
             (result) => {
                 setIsLoaded(true);
                 setWallet(result);
+                setError(false);
             },
             (error) => {
                 setIsLoaded(true);
@@ -22,6 +41,7 @@ function ActiveWallet() {
             }
         )
     })
+
     if (error) {
         return <div>Şu anda beklenmedik bir hata var. Lütfen daha sonra tekrar deneyiniz.</div>
     }
@@ -44,7 +64,7 @@ function ActiveWallet() {
                 <Units></Units>
                 
             </div>
-            <button className="btn-custom btn-custom-danger">Refund</button>
+            <button className="btn-custom btn-custom-danger" onClick={getRefund}>Refund</button>
         </div>
     }
 

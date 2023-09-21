@@ -13,11 +13,10 @@ function Products() {
             (result) => {
                 setIsLoaded(true);
                 setProducts(result);
-                console.log(result)
+                setError(false);
             },
             (error) => {
                 setIsLoaded(true);
-                console.log(error)
                 setError(error)
             }
         )

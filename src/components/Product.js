@@ -1,7 +1,45 @@
 import React from "react";
 import Skeleton from 'react-loading-skeleton'
 import "react-loading-skeleton/dist/skeleton.css";
+import ProductService from "../services/ProductService";
+import ActiveWalletServices from "../services/ActiveWalletService";
+import UnitService from "../services/UnitService";
 function Product(props) {
+
+
+
+    function buyProduct(){
+        const activeWalletService = new ActiveWalletServices();
+        
+        activeWalletService.buyProduct(props.product).then(
+            (result) => {
+                if(result.process == true){
+                    const unitService = new UnitService();
+                    unitService.buyProduct().then(
+                        (result) => {
+                            if(result.process==true){
+                                const productService = new ProductService();
+                                productService.buyProduct(props.product.id).then(
+                                    (result) => {
+                                        // işlemler ok
+                                    },
+                                    (error) => {
+                                        // hata işlemleri
+                                    }
+                                )
+                            }
+                        },
+                        (error) => {
+                            //hata işlemleri
+                        }
+                    )
+                }
+            },
+            (error) => {
+                // hata işlemleri
+            }
+        )
+    }
     
     if(props.product){
         return (
@@ -19,8 +57,10 @@ function Product(props) {
 
                         </div>
                         <div className="card-foot">
-                            <div> <p>{props.product.productAmount} Adet Kaldı </p></div>
-                            <div><button className="btn-custom btn-custom-success">{props.product.productPrice}₺ Al</button></div>
+                            <div> <p>{props.product.productAmount} pieces left </p></div>
+
+                            {props.product.productAmount >0 ?  <div><button className="btn-custom btn-custom-success" onClick={buyProduct}>{props.product.productPrice}₺ Buy</button></div> :  <div><button className="btn-custom btn-custom-danger">{props.product.productPrice}₺ Buy</button></div>}
+                           
                         </div>
                     </div>
                 

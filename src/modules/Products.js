@@ -11,9 +11,16 @@ function Products() {
         const productService = new ProductService();
         productService.getAllProducts().then(
             (result) => {
-                setIsLoaded(true);
-                setProducts(result);
-                setError(false);
+                if(result.success){
+                    setIsLoaded(true);
+                    setProducts(result.data);
+                    setError(false);
+                }
+                else{
+                    setIsLoaded(true);
+                    setError(error)
+                }
+                
             },
             (error) => {
                 setIsLoaded(true);

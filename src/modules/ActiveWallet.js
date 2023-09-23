@@ -9,20 +9,23 @@ function ActiveWallet() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [wallet, setWallet] = useState({});
 
-    function getRefund(){
+    function getRefund() {
         const activeWalletService = new ActiveWalletService();
         const reqData = {
-            "refundAmount":wallet.walletAmount
-          };
+            "refundAmount": wallet.walletAmount
+        };
         activeWalletService.refundWallet(reqData).then(
             (result) => {
-                const reqWalletData = {
-                    "remove":result.wallet
-                  };
-                  activeWalletService.updateWallet(reqWalletData).then();
+                if (result.success) {
+                    const reqWalletData = {
+                        "remove": result.data.wallet
+                    };
+                    activeWalletService.updateWallet(reqWalletData).then();
+                }
+
             },
             (error) => {
-                
+                // hata işlemleri
             }
         )
     }
@@ -31,9 +34,22 @@ function ActiveWallet() {
         const activeWalletService = new ActiveWalletService();
         activeWalletService.getActiveWallet().then(
             (result) => {
-                setIsLoaded(true);
-                setWallet(result);
-                setError(false);
+                if (result.success) {
+                    if (result.data) {
+                        setIsLoaded(true);
+                        setWallet(result.data);
+                        setError(false);
+                    }
+                    else {
+                        setIsLoaded(true);
+                        setError(error)
+                    }
+                }
+                else {
+                    setIsLoaded(true);
+                    setError(error)
+                }
+
             },
             (error) => {
                 setIsLoaded(true);
@@ -47,22 +63,22 @@ function ActiveWallet() {
     }
     else if (!isLoaded) {
         return <div id="cards_landscape_wrap-2">
-        <div class="container">
-            <div class="row">
-                
+            <div class="container">
+                <div class="row">
+
+                </div>
             </div>
         </div>
-    </div>
-        }
+    }
     else {
         return <div id="">
             <div class="container">
                 <div class="row">
                     <p>There is {wallet.walletAmount}₺ in wallet.</p>
                 </div>
-                
+
                 <Units></Units>
-                
+
             </div>
             <button className="btn-custom btn-custom-danger" onClick={getRefund}>Refund</button>
         </div>

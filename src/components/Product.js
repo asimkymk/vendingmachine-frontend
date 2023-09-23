@@ -13,11 +13,11 @@ function Product(props) {
         
         activeWalletService.buyProduct(props.product).then(
             (result) => {
-                if(result.process == true){
+                if(result.success){
                     const unitService = new UnitService();
                     unitService.buyProduct().then(
                         (result) => {
-                            if(result.process==true){
+                            if(result.success){
                                 const productService = new ProductService();
                                 productService.buyProduct(props.product.id).then(
                                     (result) => {

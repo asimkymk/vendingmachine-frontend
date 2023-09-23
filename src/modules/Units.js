@@ -14,9 +14,21 @@ function Units() {
         const unitService = new UnitService();
         unitService.getUnits().then(
             (result) => {
-                setIsLoaded(true);
-                setUnit(result);
-                setError(false);
+                if (result.success) {
+                    if (result.data) {
+                        setIsLoaded(true);
+                        setUnit(result.data);
+                        setError(false);
+                    }
+                    else {
+                        setIsLoaded(true);
+                        setError(error)
+                    }
+                } else {
+                    setIsLoaded(true);
+                    setError(error)
+                }
+
             },
             (error) => {
                 setIsLoaded(true);
@@ -29,19 +41,19 @@ function Units() {
     }
     else if (!isLoaded) {
         return <div id="cards_landscape_wrap-2">
-        <div class="container">
-            <div class="row">
-                
+            <div class="container">
+                <div class="row">
+
+                </div>
             </div>
         </div>
-    </div>
-        }
+    }
     else {
         return <>{units.map(unit => (
 
-                <Unit unit={unit} key={unit.id}></Unit>
-            ))}</>
-       
+            <Unit unit={unit} key={unit.id}></Unit>
+        ))}</>
+
     }
 
 }

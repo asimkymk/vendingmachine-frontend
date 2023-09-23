@@ -176,5 +176,20 @@ body{
   flex:8;
 }
 .box-right{
-  flex:4;
+  position: sticky;
+    top: 0; 
+    right: 0;
+}
+@media (max-width: 768px) {
+  .box-left, .box-right {
+    width: 100%;
+  }
+  
+  .box-right {
+    position: static;
+  }
+  
+  .main-box {
+    flex-direction: column-reverse;
+  }
 }

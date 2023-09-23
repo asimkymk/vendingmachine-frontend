@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SupplierService from '../services/SupplierService';
 function Supplier() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
+    const supplierService = new SupplierService();
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:8080/supplier/validateToken', {
-        headers: {
-          'Authorization': token
-        }
-      })
-        .then(response => response.json())
+      supplierService.validateToken(token)
         .then(data => {
           if (data.success) {
             navigate('/edit');
@@ -27,17 +24,10 @@ function Supplier() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Hata mesajını temizle
-
-    const response = await fetch('http://localhost:8080/supplier/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
+    setError(null);
+    const supplierService = new SupplierService();
+    
+    const data = await supplierService.login({username,password})
 
     if (data.success) {
       localStorage.setItem('token', data.data);

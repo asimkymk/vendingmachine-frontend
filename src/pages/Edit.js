@@ -202,7 +202,7 @@ function Edit() {
 
       {currentTab === 'Products' && (
         <div>
-          {/* Your Products Table and Modal Here */}
+          {}
           <table className="table mt-4">
             <thead>
               <tr>
@@ -281,7 +281,7 @@ function Edit() {
 
       {currentTab === 'Units' && (
         <div>
-          {/* Your Products Table and Modal Here */}
+          {}
           <table className="table mt-4">
             <thead>
               <tr>
